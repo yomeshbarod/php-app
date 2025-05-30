@@ -17,6 +17,6 @@ jobs:
         sudo cp -r . /var/www/html/
         sudo chown -R ubuntu:ubuntu /var/www/html/
 
-    - name: Reload Nginx
-      run: sudo systemctl reload nginx
+    - name: Reload restart
+      run: sudo systemctl restart nginx
 
