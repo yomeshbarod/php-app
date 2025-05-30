@@ -1,22 +1,20 @@
-name: Deploy PHP App to EC2
+name: Deploy application
 
 on:
   push:
-    branches: [master]
+    branches: [ main ]
 
 jobs:
   deploy:
     runs-on: self-hosted
 
     steps:
-    - uses: actions/checkout@v4
-
-    - name: Deploy to Nginx
+    - name: Checkout source code
+      uses: actions/checkout@v4
+    - name: Deploy to Apache
       run: |
-        sudo cp -r . /var/www/html/
-        sudo chown -R root:root /var/www/html/index.php
-        sudo chmod -R 755 /var/www/html/index.php
-
-    - name: nginx restart
-      run: sudo systemctl restart nginx
+        sudo rm -rf /var/www/html/index.html
+        sudo cp -r * /var/www/html/
+        sudo chown -R www-data:www-data /var/www/html/
+        sudo systemctl restart apache2
 
