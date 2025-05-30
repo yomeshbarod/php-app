@@ -14,7 +14,8 @@ jobs:
     - name: Deploy to Nginx
       run: |
         sudo cp -r . /var/www/html/
-        sudo chown -R ubuntu:ubuntu /var/www/html/
+        sudo chown -R www-data:www-data /var/www/html/index.php
+        sudo chmod -R 755 /var/www/html/index.php
 
     - name: Reload restart
       run: sudo systemctl restart nginx
