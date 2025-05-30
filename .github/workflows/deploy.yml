@@ -13,9 +13,9 @@ jobs:
 
     - name: Deploy to Nginx
       run: |
-        sudo rm -rf /var/www/html/index.html
-        sudo cp -r . /var/www/html/php-app/
-        sudo chown -R ubuntu:ubuntu /var/www/html/php-app/
+        sudo rm -rf /var/www/html/index.nginx-debian.html
+        sudo cp -r php-app/. /var/www/html/
+        sudo chown -R ubuntu:ubuntu /var/www/html/
 
     - name: Reload Nginx
       run: sudo systemctl reload nginx
