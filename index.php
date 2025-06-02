@@ -1,6 +1,6 @@
 index.php
 <?php
-$host = '172.31.13.175';  // or 'database' if using Docker
+$host = 'localhost';  // or 'database' if using Docker
 $db   = 'bookstore';
 $user = 'yomeshbarod';
 $pass = 'password';
