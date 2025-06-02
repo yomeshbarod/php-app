@@ -2,7 +2,7 @@ index.php
 <?php
 $host = '172.31.13.175';  // or 'database' if using Docker
 $db   = 'bookstore';
-$user = 'yomeshbarod';
+$user = 'yomesh';
 $pass = 'password';
 $charset = 'utf8mb4';
 
