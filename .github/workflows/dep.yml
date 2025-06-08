@@ -1,0 +1,48 @@
+name: Deploy to Environment
+
+on:
+  push:
+    branches: [dev, stage, production]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set environment based on branch
+        id: set-env
+        run: |
+          if [[ "${{ github.ref }}" == "refs/heads/dev" ]]; then
+            echo "env=DEV" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/stage" ]]; then
+            echo "env=STAGE" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
+            echo "env=PROD" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set environment variables
+        run: |
+          echo "DB_HOST=${{ secrets[format('{0}_DB_HOST', steps.set-env.outputs.env)] }}" >> .env
+          echo "DB_USER=${{ secrets[format('{0}_DB_USER', steps.set-env.outputs.env)] }}" >> .env
+          echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
+
+      - name: Upload files to server via SSH
+        uses: appleboy/scp-action@v0.1.3
+        with:
+          host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
+          username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
+          key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
+          source: "."
+          target: "/var/www/html"
+
+      - name: Restart Apache on server
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
+          username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
+          key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
+          script: |
+            sudo systemctl restart apache2
