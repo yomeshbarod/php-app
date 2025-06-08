@@ -1,9 +1,8 @@
-index.php
 <?php
-$host = 'localhost';  // or 'database' if using Docker
+$host = getenv('DB_HOST');
 $db   = 'bookstore';
-$user = 'yomeshbarod';
-$pass = 'password';
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -15,7 +14,6 @@ try {
 
     echo "<h3>✅ Connected to MySQL database successfully!</h3>";
 
-    // Sample SELECT query
     $stmt = $pdo->query("SELECT id, title, author FROM books");
 
     echo "<h4>📚 Books List:</h4><ul>";
@@ -23,8 +21,8 @@ try {
         echo "<li><strong>{$row['title']}</strong> by {$row['author']}</li>";
     }
     echo "</ul>";
-
 } catch (PDOException $e) {
     echo "<h3>❌ Database connection failed: " . $e->getMessage() . "</h3>";
 }
 ?>
+
