@@ -2,7 +2,7 @@ name: Deploy application
 
 on:
   push:
-    branches: [ master ]
+    branches: [ dev, stage, production ]
 
 jobs:
   deploy:
@@ -11,10 +11,5 @@ jobs:
     steps:
     - name: Checkout source code
       uses: actions/checkout@v4
-    - name: Deploy to Apache
-      run: |
-        sudo rm -rf /var/www/html/index.html
-        sudo cp -r * /var/www/html/
-        sudo chown -R www-data:www-data /var/www/html/
-        sudo systemctl restart apache2
+    - name: 
 
