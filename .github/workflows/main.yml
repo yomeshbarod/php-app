@@ -30,7 +30,7 @@ jobs:
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
       - name: Upload files to server via SSH
-        uses: appleboy/scp-action@v0.1.3
+        uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
