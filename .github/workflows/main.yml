@@ -30,7 +30,7 @@ jobs:
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
       - name: Upload files to server via SSH
-        uses: garygrossgarten/github-action-ssh@release
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
@@ -40,7 +40,7 @@ jobs:
             sudo chown -R www-data:www-data /var/www/html/
 
       - name: Upload files to server via SSH
-        uses: garygrossgarten/github-action-scp@release
+        uses: appleboy/ssh-action@v1
         with:
           host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
@@ -49,7 +49,7 @@ jobs:
           target: "/var/www/html/"
 
       - name: Restart Apache on server
-        uses: garygrossgarten/github-action-ssh@release
+        uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
