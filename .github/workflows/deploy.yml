@@ -23,6 +23,18 @@ jobs:
             echo "env=PROD" >> $GITHUB_OUTPUT
           fi
 
+          - name: Clean target directory and fix permissions
+            uses: appleboy/ssh-action@v1.0.3
+              with:
+                host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
+                username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
+                key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
+                port: 22
+                script: |
+                  sudo rm -rf /var/www/html/*
+                  sudo chown -R $USER:$USER /var/www/html
+
+
       - name: Environment variables set
         run: |
           echo "DB_HOST=${{ secrets[format('{0}_DB_HOST', steps.set-env.outputs.env)] }}" >> .env
