@@ -29,18 +29,11 @@ jobs:
           echo "DB_USER=${{ secrets[format('{0}_DB_USER', steps.set-env.outputs.env)] }}" >> .env
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
-      - name: Prepare SSH key
-        run: |
-          echo "${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}" > key.pem
-          chmod 600 key.pem
-
-      - name: Upload files using SCP
-        run: |
-          scp -i key.pem -o StrictHostKeyChecking=no -r . \
-          ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}@${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}:/var/www/html/
-
-      - name: Restart Apache using SSH
-        run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no \
-          ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}@${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }} \
-          "sudo systemctl restart apache2"
+      - name: Create Directory
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
+          username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
+          key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
+          script: |
+            sudo mkdir hello      
