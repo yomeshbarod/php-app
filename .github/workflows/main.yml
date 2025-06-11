@@ -29,6 +29,10 @@ jobs:
           echo "DB_USER=${{ secrets[format('{0}_DB_USER', steps.set-env.outputs.env)] }}" >> .env
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
+      - name: Upload files 
+        run: |
+          scp -i key.pem -o StrictHostKeyChecking=no -r . \
+          ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}@${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}:/var/www/html/
     
       - name: Restart Apache on server
         uses: appleboy/ssh-action@v1.0.0
