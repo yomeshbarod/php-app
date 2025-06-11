@@ -30,11 +30,13 @@ jobs:
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
 
+      - name: Prepare SSH key
+        run: |
+          echo "${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}" > key.pem
+          chmod 600 key.pem
+
       - name: Restart Apache
-        uses: appleboy/ssh-action@v1.0.0
-        with:
-          host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
-          username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
-          key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
-          script: |
-            sudo systemctl restart apache2          
+        run: |
+          ssh -i key.pem -o StrictHostKeyChecking=no \
+          ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}@${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }} \
+          "sudo systemctl restart apache2"
