@@ -30,13 +30,27 @@ jobs:
           echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
 
 
-      - name: Prepare SSH key
-        run: |
-          echo "${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}" > key.pem
-          chmod 600 key.pem
+      - name: Restart Apache on server with environment variables
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }}
+          username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
+          key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
+          envs: DB_HOST,DB_USER,DB_PASS
+          script: |
+            export DB_HOST="${{ secrets[format('{0}_DB_HOST', steps.set-env.outputs.env)] }}"
+            export DB_USER="${{ secrets[format('{0}_DB_USER', steps.set-env.outputs.env)] }}"
+            export DB_PASS="${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}"
 
-      - name: Restart Apache
-        run: |
-          ssh -i key.pem -o StrictHostKeyChecking=no \
-          ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}@${{ secrets[format('{0}_SERVER_IP', steps.set-env.outputs.env)] }} \
-          "sudo systemctl restart apache2"
+     
+            cat <<EOF | sudo tee /var/www/html/.env
+               DB_HOST=$DB_HOST
+               DB_USER=$DB_USER
+               DB_PASS=$DB_PASS
+               EOF
+
+            sudo chown www-data:www-data /var/www/html/.env
+            sudo chmod 600 /var/www/html/.env
+
+            sudo systemctl restart apache2
+
