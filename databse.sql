@@ -12,6 +12,6 @@ CREATE TABLE books (
 );
 
 INSERT INTO books (title, author) VALUES
-('Clean Code', 'Robert C. Martin'),
+('Clean Code', 'Robert C. Marti\'),
 ('The Pragmatic Programmer', 'Andrew Hunt'),
 ('Design Patterns', 'Erich Gamma');
