@@ -14,7 +14,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
 
-    echo "<h3>✅ Connected to MySQL database successfully!12345</h3>";
+    echo "<h3>✅ Connected to MySQL database successfully!Devlopment</h3>";
 
     $stmt = $pdo->query("SELECT id, title, author FROM books");
 
