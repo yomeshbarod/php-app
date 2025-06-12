@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
           key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
           source: "."
-          target: "/var/www/html"
+          target: "/home/ubuntu/app"
 
       - name: Restart Apache
         uses: appleboy/ssh-action@v1.0.0
@@ -45,4 +45,6 @@ jobs:
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
           key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
           script: |
+          
+            sudo mv /home/ubuntu/app/* /var/www/html
             sudo systemctl restart apache2
