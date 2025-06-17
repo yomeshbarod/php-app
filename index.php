@@ -1,10 +1,8 @@
 <?php
-$env = parse_ini_file(__DIR__ . '/.env');
-
-$host = $env['DB_HOST'];
+$host = getenv('DB_HOST');
 $db   = 'bookstore';
-$user = $env['DB_USER'];
-$pass = $env['DB_PASS'];
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -23,6 +21,7 @@ try {
         echo "<li><strong>{$row['title']}</strong> by {$row['author']}</li>";
     }
     echo "</ul>";
+
 } catch (PDOException $e) {
     echo "<h3>❌ Database connection failed: " . $e->getMessage() . "</h3>";
 }
