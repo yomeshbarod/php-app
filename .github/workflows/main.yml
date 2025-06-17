@@ -23,12 +23,6 @@ jobs:
             echo "env=PROD" >> $GITHUB_OUTPUT
           fi
 
-      - name: Set environment variables
-        run: |
-          echo "DB_HOST=${{ secrets[format('{0}_DB_HOST', steps.set-env.outputs.env)] }}" >> .env
-          echo "DB_USER=${{ secrets[format('{0}_DB_USER', steps.set-env.outputs.env)] }}" >> .env
-          echo "DB_PASS=${{ secrets[format('{0}_DB_PASS', steps.set-env.outputs.env)] }}" >> .env
-
       - name: Upload files 
         uses: appleboy/scp-action@v0.1.3
         with:
