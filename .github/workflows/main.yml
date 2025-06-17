@@ -40,5 +40,5 @@ jobs:
           key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
           script: |
           
-            sudo mv /home/ubuntu/app/* /var/www/html
+            sudo mv /home/ubuntu/app/* /var/www/html/
             sudo systemctl restart apache2
