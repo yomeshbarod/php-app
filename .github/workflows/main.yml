@@ -41,4 +41,4 @@ jobs:
           script: |
           
             sudo mv /home/ubuntu/app/* /var/www/html/
-            sudo systemctl restart apache2
+            sudo systemctl restart httpd
