@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets[format('{0}_SERVER_USER', steps.set-env.outputs.env)] }}
           key: ${{ secrets[format('{0}_SSH_KEY', steps.set-env.outputs.env)] }}
           source: "."
-          target: "/home/ubuntu/app"
+          target: "/home/ec2-user/app"
 
       - name: Restart Apache
         uses: appleboy/ssh-action@v1.0.0
