@@ -1,5 +1,4 @@
 <?php
-
 $host = getenv('DB_HOST');
 $db   = 'bookstore';
 $user = getenv('DB_USER');
@@ -22,6 +21,7 @@ try {
         echo "<li><strong>{$row['title']}</strong> by {$row['author']}</li>";
     }
     echo "</ul>";
+
 } catch (PDOException $e) {
     echo "<h3>❌ Database connection failed: " . $e->getMessage() . "</h3>";
 }
