@@ -1,9 +1,9 @@
 <?php
 
-$host = $getenv('DB_HOST');
+$host = getenv('DB_HOST');
 $db   = 'bookstore';
-$user = $getenv('DB_USER');
-$pass = $getenv('DB_PASS');
+$user = getenv('DB_USER');
+$pass = getenv('DB_PASS');
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
