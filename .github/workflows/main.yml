@@ -19,8 +19,8 @@ jobs:
             echo "env=DEV" >> $GITHUB_OUTPUT
           elif [[ "${{ github.ref }}" == "refs/heads/stage" ]]; then
             echo "env=STAGE" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.ref }}" == "refs/heads/production" ]]; then
-            echo "env=PROD" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.ref }}" == "refs/heads/master" ]]; then
+            echo "env=MASTER" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload files 
