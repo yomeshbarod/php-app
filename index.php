@@ -12,7 +12,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
     ]);
 
-    echo "<h3>✅ Connected to MySQL database successfully From Production </h3>";
+    echo "<h3>✅ Connected to MySQL database successfully From </h3>";
 
     $stmt = $pdo->query("SELECT id, title, author FROM books");
 
