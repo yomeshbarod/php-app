@@ -14,6 +14,7 @@ try {
 
     echo "<h3>✅ Connected to MySQL database successfully From  </h3>";
 
+
     $stmt = $pdo->query("SELECT id, title, author FROM books");
 
     echo "<h4>📚 Books List:</h4><ul>";
